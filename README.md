@@ -16,5 +16,5 @@
   </a>
 </p>
 <p align="center">
-下载地址: <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">GitHub release</a> | <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">123网盘</a>
+下载地址: <a href="https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases">GitHub release</a> | <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">123网盘</a>
 </p>
