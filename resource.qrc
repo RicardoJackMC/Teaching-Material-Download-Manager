@@ -1,0 +1,7 @@
+<RCC>
+  <qresource>
+    <file>recourse/logo.ico</file>
+    <file>recourse/logo.png</file>
+    <file>recourse/qfluentwidgets_logo.png</file>
+  </qresource>
+</RCC>
