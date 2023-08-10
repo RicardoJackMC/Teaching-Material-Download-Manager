@@ -15,5 +15,6 @@
     <img src="https://img.shields.io/badge/Platform-Win32-blue?color=#4ec820" alt="Platform Win32"/>
   </a>
 </p>
-
-[123网盘下载地址](https://www.123pan.com/s/Y59qVv-uuubd.html)
+<p align="center">
+下载地址: <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">GitHub release</a> | <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">123网盘</a>
+</p>
