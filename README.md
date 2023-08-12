@@ -18,9 +18,9 @@
 <p align="center">
 下载地址: <a href="https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases">GitHub release</a> | <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">123网盘</a>
 </p>
-
-
-
+<p align="center">
+  <img width="18%" align="center" src="https://raw.githubusercontent.com/RicardoJackMC/Teaching-Material-Download-Manager/main/recourse/pic.png" alt="logo">
+</p>
 
 ## 食用方法🍕
 
