@@ -21,6 +21,7 @@
 
 
 
+
 ## 食用方法🍕
 
 从[release](https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases)页面选择最新版本, 点击`Teaching-Material-Download-Manager.zip`或者前往[123网盘](https://www.123pan.com/s/Y59qVv-uuubd.html)选择最新版本, 下载`Teaching-Material-Download-Manager.zip`, 下载完成后解压, 双击`main.exe`即可使用.
@@ -171,6 +172,10 @@ print(json_data['custom_properties']['thumbnails'][0])
 | https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/7a69755810bb492c9e44f94a213b7e5e/pdf.pdf |
 
 综上所述, 一个教材目前最多有 13 个下载链接.
+
+> **Note**
+> 当程序无法获得ID_B, 标题, JSON文件, 或某个下载链接失效时会弹出警告信息
+> 当无法识别ID_A, 或所有下载链接失效时, 程序会弹出错误信息
 
 ### 总结
 
