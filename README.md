@@ -28,7 +28,7 @@
 
 ## 演示视频📽️
 
-在B站看本软件的[演示视频]()
+在B站看本软件的[演示视频](https://www.bilibili.com/video/BV1Ku4y1d7zf)
 
 ## 敏感行为🛡️
 
