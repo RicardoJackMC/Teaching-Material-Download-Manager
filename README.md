@@ -30,7 +30,10 @@
 <h4 align="center">
   如果你的设备不受支持, 可以查看<a href="#pt1-下载原理">下载原理</a>自行获取教材下载链接！
 </h4>
-
+</p>
+<p align="center">
+  <img width="100%" align="center" src="https://raw.githubusercontent.com/RicardoJackMC/Teaching-Material-Download-Manager/main/recourse/pic.png" alt="logo">
+</p>
 
 
 
