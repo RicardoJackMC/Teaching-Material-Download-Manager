@@ -28,7 +28,7 @@
 下载地址: <a href="https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases">GitHub release</a> | <a href="https://gitee.com/RicardoJackMC/Teaching-Material-Download-Manager/releases">Gitee release</a> | <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">123网盘</a>
 </p>  
 <h4 align="center">
-  如果你的设备不受支持, 可以查看<a href="#Pt.1 下载原理">下载原理</a>自行获取教材下载链接！
+  如果你的设备不受支持, 可以查看<a href="#Pt.1-下载原理">下载原理</a>自行获取教材下载链接！
 </h4>
 
 
@@ -54,7 +54,7 @@
 | ------------------------------------------------------------ | :----------------------------------------------------------- | ------------------------------------------------------------ |
 | 对与 main.exe 同个目录下的的 config.json 进行读取与写入      | 当软件第一次启动时, 或当用户更改任意设置使自动触发           | 位于与 main.exe 同一目录下的 config.json 为本软件的配置文件, 上面记载了用户对软件的设置, 例如: 是否开启队列, 是否开启自动下载等. |
 | 将 JSON 文件保存至用户指定的位置                             | 当用户点击“导出下载日志按钮时”在用户选定保存位置后触发       | 被保存的 JSON 文件为软件的下载日志, 上面记载了下载时的信息, 例如: 未能获取要保存的教材 pdf 文件标题的原因, 下载失败文件的链接等. 用户可以自行决定是否生成 JSON 文件,  JSON 文件的保存位置, 以及是否将 JSON 文件自行发送给开发者 |
-| 与多个智慧教育平台 api (网址)通讯                            | 当处理任意任务时, 自动触发, 使用到 api (网址)详见[下载原理](#Pt.1 下载原理) | 软件需要与多个网站通讯才可获得 ID_B, 教材 pdf 文件的标题, 教材下载链接及下载教材, 具体通讯的网站可查看[下载原理](#Pt.1 下载原理) |
+| 与多个智慧教育平台 api (网址)通讯                            | 当处理任意任务时, 自动触发, 使用到 api (网址)详见[下载原理](#Pt.1 下载原理) | 软件需要与多个网站通讯才可获得 ID_B, 教材 pdf 文件的标题, 教材下载链接及下载教材, 具体通讯的网站可查看[下载原理](#Pt.1-下载原理) |
 | 与 https://api.github.com/repos/RicardoJackMC/Teaching-Material-Download-Manager/releases/latest 和 https://gitee.com/api/v5/repos/RicardoJackMC/Teaching-Material-Download-Manager/releases/latest 通讯 | 当用户点击“检查更新”时触发                                   | 这两个链接为 GitHub 和 Gitee 的 api,  软件通过此 api 获取版本号判断是否有新版本 |
 | 读取注册表: HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize 下 AppsUseLightTheme 的值 | 每次当软件启动时自动触发                                     | 判断软件是否应启用暗黑模式使其与系统应用的外观同步           |
 | 读取注册表: HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM 下 AccentColor 的值 | 每次当软件启动时自动触发                                     | 设置软件的主题色使其与系统应用同步                           |
