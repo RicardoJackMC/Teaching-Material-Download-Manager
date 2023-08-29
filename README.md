@@ -209,8 +209,6 @@ print(json_data['custom_properties']['thumbnails'][0])
 
 主进程下又有子线程 normal_info, admin_info 专门监听 queue 和 queue_admin, 另外还有子线程 update_func 专门负责检查软件更新. 
 
-此方法大大改善了上个版本中下载时界面卡顿的问题. (自豪.jpg)
-
 ## 软件前瞻 (前方大型画饼现场)🍪
 
 此外, 作者正在研究 智慧教育平台的课程的下载方法, 以及国家智慧教育读书平台, Library Genesis, Sci-Hub, Z-Library 等网站的下载方法.
