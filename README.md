@@ -28,7 +28,7 @@
 下载地址: <a href="https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases">GitHub release</a> | <a href="https://gitee.com/RicardoJackMC/Teaching-Material-Download-Manager/releases">Gitee release</a> | <a href="https://www.123pan.com/s/Y59qVv-uuubd.html">123网盘</a>
 </p>  
 <h4 align="center">
-  如果你的设备不受支持, 可以查看<a href="#Pt.1下载原理">下载原理</a>自行获取教材下载链接！
+  如果你的设备不受支持, 可以查看<a href="#Pt.1 下载原理">下载原理</a>自行获取教材下载链接！
 </h4>
 
 
