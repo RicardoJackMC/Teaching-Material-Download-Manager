@@ -1,1 +1,1 @@
-{"list_enable_value": 1, "auto_download_enable_value": 0, "open_folder_value": 1, "folder": "", "save_mode": 1, "first_open": 1}
+{"download_mode": 1, "Aria2_url": "", "open_folder": true, "folder": "", "save_mode": 1, "first_open": true, "chunk_size": 1024, "IDM_path": "", "SegmentedWidget_show": "basic_info"}
