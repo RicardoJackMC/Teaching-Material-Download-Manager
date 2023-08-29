@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/License-GPLv3-blue?color=#4ec820" alt="GPLv3"/>
   </a>  
 <a style="text-decoration:none">
-    <img src="https://img.shields.io/badge/Platform-Win32-blue?color=#4ec820" alt="Platform Win32"/>
+    <img src="https://img.shields.io/badge/Platform-Windows-blue?color=#4ec820" alt="Platform Windows"/>
   </a>
 <a style="text-decoration:none">
     <img src="https://img.shields.io/badge/Python-3.9.13-blue?color=#4ec820" alt="Python 3.9.13"/>
@@ -30,24 +30,38 @@
 <h4 align="center">
   如果你的设备不受支持, 可以查看<a href="#pt1-下载原理">下载原理</a>自行获取教材下载链接！
 </h4>
-</p>
 <p align="center">
   <img width="100%" align="center" src="https://raw.githubusercontent.com/RicardoJackMC/Teaching-Material-Download-Manager/main/recourse/pic.png" alt="logo">
 </p>
 
 
 
-
-
-
-
 ## 食用方法🍕
 
-从 [Github release](https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 或 [Gitee release](https://gitee.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 页面选择最新版本, 点击`Teaching-Material-Download-Manager.zip`, 或者前往 [123网盘](https://www.123pan.com/s/Y59qVv-uuubd.html) 选择最新版本的文件夹, 下载`Teaching-Material-Download-Manager.zip`, 下载完成后解压, 双击`main.exe`即可使用.
+### 想开盖即食 ?
 
-## 演示视频📽️
+从 [Github release](https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 或 [Gitee release](https://gitee.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 页面选择最新版本, 点击`Teaching-Material-Download-Manager.zip`, 或者前往 [123网盘](https://www.123pan.com/s/Y59qVv-uuubd.html) 选择最新版本的文件夹, 下载`Teaching-Material-Download-Manager.zip`, 下载完成后解压, 双击`main.exe`即可使用. 具体操作可以去B站看[演示视频]()
 
-在B站看本软件的[演示视频]()
+### 想食用源码 ?
+
+下载完源码后解压, (有需要的记得先激活虚拟环境) 在 cmd 中用`cd`转到`main.py`所在的目录, 然后运行
+
+```
+pip install -r requirements.txt
+```
+
+然后, ENJOY YOURSELF ! ! !
+
+> **Note**
+> 本软件的开发环境如下
+>
+> Python 3.9.13
+>
+> PyQt5 5.15.9
+>
+> requests 2.31.0
+>
+> PyQt-Fluent-Widgets 1.1.9
 
 ## 敏感行为🛡️
 
@@ -56,6 +70,7 @@
 | 行为                                                         | 触发方式                                                     | 具体描述                                                     |
 | ------------------------------------------------------------ | :----------------------------------------------------------- | ------------------------------------------------------------ |
 | 对与 main.exe 同个目录下的的 config.json 进行读取与写入      | 当软件第一次启动时, 或当用户更改任意设置使自动触发           | 位于与 main.exe 同一目录下的 config.json 为本软件的配置文件, 上面记载了用户对软件的设置, 例如: 是否开启队列, 是否开启自动下载等. |
+| 对与 main.exe 同个目录下的的 URL.json 进行读取               | 当软件启动时                                                 | 与 main.exe 同个目录下的的 URL.json 记载了多个智慧教育网站的 api (网址), 用于生成最终的下载链接 |
 | 将 JSON 文件保存至用户指定的位置                             | 当用户点击“导出下载日志按钮时”在用户选定保存位置后触发       | 被保存的 JSON 文件为软件的下载日志, 上面记载了下载时的信息, 例如: 未能获取要保存的教材 pdf 文件标题的原因, 下载失败文件的链接等. 用户可以自行决定是否生成 JSON 文件,  JSON 文件的保存位置, 以及是否将 JSON 文件自行发送给开发者 |
 | 与多个智慧教育平台 api (网址)通讯                            | 当处理任意任务时, 自动触发, 使用到 api (网址)详见[下载原理](#pt1-下载原理) | 软件需要与多个网站通讯才可获得 ID_B, 教材 pdf 文件的标题, 教材下载链接及下载教材, 具体通讯的网站可查看[下载原理](#pt1-下载原理) |
 | 与 https://api.github.com/repos/RicardoJackMC/Teaching-Material-Download-Manager/releases/latest 和 https://gitee.com/api/v5/repos/RicardoJackMC/Teaching-Material-Download-Manager/releases/latest 通讯 | 当用户点击“检查更新”时触发                                   | 这两个链接为 GitHub 和 Gitee 的 api,  软件通过此 api 获取版本号判断是否有新版本 |
@@ -257,4 +272,3 @@ Copyright 2023 by RicardoJackMC
 **2. 若第一条未能实现, 本人希望全人类都能记住, 在公元2023年8月24日, 日本正式启动福岛核污染水排海 (本人将致力于实现本条诉求)**
 
 最后祝愿各位顺利可以成功通关地球OL😶‍🌫️！！！
-
