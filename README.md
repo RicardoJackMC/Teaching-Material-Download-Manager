@@ -40,7 +40,7 @@
 
 ### 想开盖即食 ?
 
-从 [Github release](https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 或 [Gitee release](https://gitee.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 页面选择最新版本, 点击`Teaching-Material-Download-Manager.zip`, 或者前往 [123网盘](https://www.123pan.com/s/Y59qVv-uuubd.html) 选择最新版本的文件夹, 下载`Teaching-Material-Download-Manager.zip`, 下载完成后解压, 双击`main.exe`即可使用. 具体操作可以去B站看[演示视频]()
+从 [Github release](https://github.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 或 [Gitee release](https://gitee.com/RicardoJackMC/Teaching-Material-Download-Manager/releases) 页面选择最新版本, 点击`Teaching-Material-Download-Manager.zip`, 或者前往 [123网盘](https://www.123pan.com/s/Y59qVv-uuubd.html) 选择最新版本的文件夹, 下载`Teaching-Material-Download-Manager.zip`, 下载完成后解压, 双击`main.exe`即可使用. 具体操作可以去B站看[演示视频](https://www.bilibili.com/video/BV1xH4y1Q7aM/)
 
 ### 想食用源码 ?
 
