@@ -52,8 +52,10 @@ class Downloader():
         self.KEY = []  # @
         self.KEY_admin = []  # @
 
-        if os.path.isfile('.\\URL.json'):
-            with open('.\\URL.json', 'r') as f:
+        # 使用跨平台的路径
+        url_file = os.path.join('.', 'URL.json')
+        if os.path.isfile(url_file):
+            with open(url_file, 'r') as f:
                 self.URL = json.load(f)
 
         self.url_PDF_current_Left = self.URL['url_PDF_current_Left']
@@ -75,8 +77,9 @@ class Downloader():
                     self.url_A = command['command']['url_A']
                     self.save_mode = command['command']['save_mode']
                     self.save_path = command['command']['save_path']
-                    if not self.save_path.endswith('\\'):
-                        self.save_path = self.save_path + '\\'
+                    # 使用跨平台的路径分隔符
+                    if not self.save_path.endswith(os.sep):
+                        self.save_path = self.save_path + os.sep
                     self.IDM_path = command['command']['IDM_path']
                     self.Aria2_url = command['command']['Aria2_url']
                     self.download_mode = command['command']['download_mode']
@@ -365,26 +368,32 @@ class Downloader():
             return False
 
     def IDM_download(self):
-        self.producer('state', 'sending to IDM...')
-        time.sleep(0.5)
-        print(self.IDM_path)
-        command_1 = [f"{self.IDM_path}", "/d", f"{self.url_PDF}", "/p", f"{self.save_path}", f"/f",
-                     f"{os.path.basename(self.path_PDF)}"]
-        command_data = ''
-        for i in command_1:
-            command_data = command_data + i + ' '
-        process = subprocess.Popen(command_1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return_code = process.wait()
-        stdout, stderr = process.communicate()
-        if return_code == 0:
-            self.download_data_update('successfully run: ' + command_data)
-            self.download_data_update('FINISH', FINISH_STATE=self.warning)
-            return True
+        # IDM是Windows专用软件，在macOS上使用内置下载
+        import sys
+        if sys.platform == 'darwin':  # macOS
+            self.download_data_update('IDM is not available on macOS, using built-in download instead')
+            return self.download_PDF()  # 在macOS上回退到内置下载
         else:
-            self.download_data_update(
-                'failed to run: ' + command_data + ' return code: ' + str(return_code) + ' stderr: ' + str(stderr))
-            self.download_data_update('FINISH ERROR')
-            return False
+            self.producer('state', 'sending to IDM...')
+            time.sleep(0.5)
+            print(self.IDM_path)
+            command_1 = [f"{self.IDM_path}", "/d", f"{self.url_PDF}", "/p", f"{self.save_path}", f"/f",
+                         f"{os.path.basename(self.path_PDF)}"]
+            command_data = ''
+            for i in command_1:
+                command_data = command_data + i + ' '
+            process = subprocess.Popen(command_1, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return_code = process.wait()
+            stdout, stderr = process.communicate()
+            if return_code == 0:
+                self.download_data_update('successfully run: ' + command_data)
+                self.download_data_update('FINISH', FINISH_STATE=self.warning)
+                return True
+            else:
+                self.download_data_update(
+                    'failed to run: ' + command_data + ' return code: ' + str(return_code) + ' stderr: ' + str(stderr))
+                self.download_data_update('FINISH ERROR')
+                return False
 
     def Aria2_download(self):
         self.producer('state', 'sending to Aria2...')
