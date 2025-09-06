@@ -23,7 +23,8 @@ import os
 import sys
 import time
 import webbrowser
-import winreg
+# 移除winreg导入，它是Windows专用的
+# import winreg
 from functools import partial
 import requests
 import resources_rc
@@ -433,9 +434,23 @@ class Ui_MainWindow(RoundWindow):
 
     def setupUi(self, MainWindow):
         print('setup')
-        if os.path.isfile('.\\config.json'):
-            with open('.\\config.json', 'r') as f:
+        config_path = os.path.join('.', 'config.json')
+        if os.path.isfile(config_path):
+            with open(config_path, 'r') as f:
                 self.config = json.load(f)
+        else:
+            # 如果配置文件不存在，创建默认配置
+            self.config = {
+                "download_mode": 1,
+                "Aria2_url": "",
+                "open_folder": True,
+                "folder": "",
+                "save_mode": 1,
+                "first_open": True,
+                "chunk_size": 1024,
+                "IDM_path": "",
+                "SegmentedWidget_show": "basic_info"
+            }
 
         self.folder = self.config['folder']
         self.save_mode = self.config['save_mode']
@@ -814,7 +829,10 @@ class Ui_MainWindow(RoundWindow):
         self.ComboBox_same.setItemText(1, self._translate("MainWindow", "添加数字后缀"))
         self.ComboBox_same.setItemText(2, self._translate("MainWindow", "添加时间后缀"))
         self.ComboBox_mode.setItemText(0, self._translate("MainWindow", "使用软件内建下载"))
-        self.ComboBox_mode.setItemText(1, self._translate("MainWindow", "调用IDM下载器下载"))
+        if sys.platform == 'darwin':  # macOS
+            self.ComboBox_mode.setItemText(1, self._translate("MainWindow", "IDM (不支持macOS)"))
+        else:
+            self.ComboBox_mode.setItemText(1, self._translate("MainWindow", "调用IDM下载器下载"))
         self.ComboBox_mode.setItemText(2, self._translate("MainWindow", "发送到Aria2服务器下载"))
         self.ComboBox_mode.setItemText(3, self._translate("MainWindow", "仅获取下载链接"))
         self.SegmentedWidget.addItem('basic_info', '基本信息', onClick=self.show_basic_info)
@@ -888,7 +906,13 @@ class Ui_MainWindow(RoundWindow):
         self.TableWidget_finished.resizeRowsToContents()
         self.TableWidget.removeRow(1)
         if self.list[0]['open_folder'] and self.list[0]['download_mode'] == 0:
-            os.startfile(self.list[0]['save_path'])
+            # 使用跨平台的打开文件夹方法
+            if sys.platform == 'win32':
+                os.startfile(self.list[0]['save_path'])
+            elif sys.platform == 'darwin':  # macOS
+                os.system(f'open "{self.list[0]["save_path"]}"')
+            else:  # Linux
+                os.system(f'xdg-open "{self.list[0]["save_path"]}"')
         self.list_finish.append(self.list[0])
         self.list.pop(0)
 
@@ -1024,7 +1048,8 @@ class Ui_MainWindow(RoundWindow):
 
     def save_config(self, config_type, info):
         self.config[config_type] = info
-        with open('config.json', 'w') as f:
+        config_path = os.path.join('.', 'config.json')
+        with open(config_path, 'w') as f:
             json.dump(self.config, f)
 
     def show_basic_info(self):
@@ -1063,6 +1088,21 @@ class Ui_MainWindow(RoundWindow):
         self.TextEdit.setVisible(state)
 
     def ComboBox_mode_change(self, index):
+        # 在macOS上自动跳过IDM选项
+        if sys.platform == 'darwin' and index == 1:
+            # 在macOS上选择IDM时自动切换到内置下载
+            InfoBar.warning(
+                title='不支持IDM',
+                content='IDM不支持macOS，已自动切换到内置下载',
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP,
+                duration=3000,
+                parent=self
+            )
+            self.ComboBox_mode.setCurrentIndex(0)
+            index = 0
+            
         self.download_mode = index
         self.save_config('download_mode', self.download_mode)
         if index == 0:
@@ -1155,21 +1195,39 @@ class Ui_MainWindow(RoundWindow):
                 self.path_wrong_warning_dialog()
 
     def path_wrong_warning_dialog(self, state=None):
+        # 在macOS上默认使用~/Downloads作为下载路径
+        default_path = os.path.expanduser('~/Downloads')
+        if not os.path.exists(default_path):
+            os.makedirs(default_path)
+        
         title = '当前路径不可用'
-        content = """点击下方OK按钮后在弹出的窗口中浏览并选择文件夹"""
+        content = f"""当前路径不可用，将使用默认路径: {default_path}
+点击“选择其他路径”可以选择其他文件夹"""
         w = Dialog(title, content, self)
+        w.yesButton.setText('使用默认路径')
+        w.cancelButton.setText('选择其他路径')
         if w.exec():
-            self.choose_folder(state=state)
+            # 使用默认路径
+            self.folder = default_path + os.sep
+            self.LineEdit_path.setText(self.folder)
+            self.save_config('folder', self.folder)
+            self.ToolButton_path_ok.setEnabled(False)
+            if state == 'force' and len(self.list) > 0:
+                self.list[0]['save_path'] = self.folder
         else:
-            if state == 'force':
-                self.confirm_folder(source='chosen', state=state)
+            # 选择其他路径
+            self.choose_folder(state=state)
 
     def choose_folder(self, state=None):
-        chosen_fold = QtWidgets.QFileDialog.getExistingDirectory(None, "选取文件夹",
-                                                                 os.path.expanduser('~') + '\\document')
+        # 使用跨平台的路径处理
+        default_dir = os.path.expanduser('~/Downloads')
+        chosen_fold = QtWidgets.QFileDialog.getExistingDirectory(None, "选取文件夹", default_dir)
         if chosen_fold:
-            if not chosen_fold.endswith('\\'):
-                self.folder = chosen_fold + '\\'
+            # 使用os.sep代替硬编码的反斜杠
+            if not chosen_fold.endswith(os.sep):
+                self.folder = chosen_fold + os.sep
+            else:
+                self.folder = chosen_fold
         self.confirm_folder(source='chosen', state=state)
 
     def LineEdit_path_change(self):
@@ -1194,6 +1252,14 @@ class Ui_MainWindow(RoundWindow):
         )
 
     def confirm_IDM_path(self, source=None, state=None):
+        # 在macOS上跳过IDM配置
+        if sys.platform == 'darwin':
+            self.LineEdit_path_IDM.setText('不支持macOS')
+            self.LineEdit_path_IDM.setEnabled(False)
+            self.ToolButton_path_ok_IDM.setEnabled(False)
+            self.ToolButton_path_find_IDM.setEnabled(False)
+            return
+            
         if source == 'start':
             if os.path.isfile(self.IDM_path) and os.path.basename(self.IDM_path) == 'IDMan.exe':
                 self.LineEdit_path_IDM.setText(self.IDM_path)
@@ -1252,9 +1318,11 @@ class Ui_MainWindow(RoundWindow):
 
     def export_download_data(self):
         try:
+            # 使用跨平台的路径
+            default_dir = os.path.expanduser('~/Documents')
             exported_data = QtWidgets.QFileDialog.getSaveFileName(self,
                                                                   "导出下载日志",
-                                                                  os.path.expanduser('~') + '\\document\\',
+                                                                  os.path.join(default_dir, ''),
                                                                   "JSON文件 (*.json)")
             with open(exported_data[0], 'w') as f:
                 json.dump(self.download_data, f)
@@ -1376,17 +1444,24 @@ class Ui_MainWindow(RoundWindow):
         self.about_window.show()
 
     def get_windows_theme_color(self):
+        # macOS不使用Windows注册表，返回默认主题色
+        # 默认使用蓝色主题
         try:
-            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM")
-            value, type_ = winreg.QueryValueEx(key, "AccentColor")
-            winreg.CloseKey(key)
-            if type_ == winreg.REG_DWORD:
-                r = value % 256
-                g = (value >> 8) % 256
-                b = (value >> 16) % 256
-                theme_color = [r, g, b]
+            if sys.platform == 'win32':
+                import winreg
+                key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM")
+                value, type_ = winreg.QueryValueEx(key, "AccentColor")
+                winreg.CloseKey(key)
+                if type_ == winreg.REG_DWORD:
+                    r = value % 256
+                    g = (value >> 8) % 256
+                    b = (value >> 16) % 256
+                    theme_color = [r, g, b]
+                else:
+                    theme_color = None
             else:
-                theme_color = None
+                # macOS默认主题色（蓝色）
+                theme_color = [0, 122, 255]
         except:
             theme_color = None
         return theme_color
@@ -1394,10 +1469,24 @@ class Ui_MainWindow(RoundWindow):
     def set_DISPLAY_MODE(self):
         global DISPLAY_MODE
         try:
-            key_path = r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path) as key:
-                value_name = "AppsUseLightTheme"
-                value, _ = winreg.QueryValueEx(key, value_name)
-                DISPLAY_MODE = value
+            if sys.platform == 'win32':
+                import winreg
+                key_path = r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path) as key:
+                    value_name = "AppsUseLightTheme"
+                    value, _ = winreg.QueryValueEx(key, value_name)
+                    DISPLAY_MODE = value
+            elif sys.platform == 'darwin':  # macOS
+                # 尝试使用darkdetect包检测暗黑模式
+                try:
+                    import darkdetect
+                    if darkdetect.isDark():
+                        DISPLAY_MODE = 0  # Dark mode
+                    else:
+                        DISPLAY_MODE = 1  # Light mode
+                except:
+                    DISPLAY_MODE = 1  # 默认亮色模式
+            else:
+                DISPLAY_MODE = 1  # 其他系统默认亮色模式
         except:
             DISPLAY_MODE = 1

@@ -1,3 +1,7 @@
 PyQt5==5.15.9
 requests==2.31.0
 PyQt-Fluent-Widgets==1.1.9
+
+# Optional dependencies for macOS
+# Uncomment the following line if you're on macOS:
+# darkdetect  # For detecting dark mode on macOS
